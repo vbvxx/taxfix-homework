@@ -6,13 +6,15 @@ export interface SearchState {
   searchResults: string[];
   selectedCurrency: string;
   searchQuery: string;
+  isEditingBaseCurrency: boolean;
 }
 
 const initialState: SearchState = {
   initialArray: [],
   searchResults: [],
   selectedCurrency: "",
-  searchQuery: ""
+  searchQuery: "",
+  isEditingBaseCurrency: false
 };
 
 export const search: Reducer<SearchState, SearchActions> = (
@@ -25,7 +27,8 @@ export const search: Reducer<SearchState, SearchActions> = (
         ...state,
         initialArray: [...action.searchResults],
         searchResults: [...action.searchResults],
-        selectedCurrency: action.selectedCurrency
+        selectedCurrency: action.selectedCurrency,
+        isEditingBaseCurrency: action.isEditingBaseCurrency
       };
     case SearchActionTypes.UPDATE_SEARCH_QUERY:
       let searchResults = [];

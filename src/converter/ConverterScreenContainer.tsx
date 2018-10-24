@@ -11,6 +11,7 @@ import {
 } from "../redux/currency/CurrencyReducer";
 import ConverterScreenPresenter from "./ConverterScreenPresenter";
 import { initSearchResultActionCreator } from "../redux/search/SearchActions";
+import { from } from "rxjs";
 
 interface OwnProps {}
 
@@ -26,23 +27,30 @@ interface DispatchProps {
   fetchRatesActionCreator: () => void;
   initSearchResults: (
     searchResults: string[],
-    selectedCurrency: string
+    selectedCurrency: string,
+    fromBaseCurrency: boolean
   ) => void;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
 
-class ConverterScreenContainer extends React.Component<Props> {
+interface State {
+  editingBaseCurrency?: boolean;
+}
+
+class ConverterScreenContainer extends React.Component<Props, State> {
   componentDidMount() {
     this.props.fetchRatesActionCreator();
   }
 
   onCurrencyCellPress = (fromBaseCurrency: boolean) => {
+    this.setState({ editingBaseCurrency: fromBaseCurrency });
     this.props.initSearchResults(
       this.props.currencyArray,
       fromBaseCurrency
         ? this.props.baseRate!.currency
-        : this.props.selectedRate!.currency
+        : this.props.selectedRate!.currency,
+      fromBaseCurrency
     );
   };
 
@@ -75,8 +83,18 @@ const mapDispatchToProps = (dispatch: Dispatch<RootActions>): DispatchProps => {
     fetchRatesActionCreator: () => {
       dispatch(fetchRatesActionCreator());
     },
-    initSearchResults: (searchResults: string[], selectedCurrency: string) => [
-      dispatch(initSearchResultActionCreator(searchResults, selectedCurrency))
+    initSearchResults: (
+      searchResults: string[],
+      selectedCurrency: string,
+      fromBaseCurrency: boolean
+    ) => [
+      dispatch(
+        initSearchResultActionCreator(
+          searchResults,
+          selectedCurrency,
+          fromBaseCurrency
+        )
+      )
     ]
   };
 };

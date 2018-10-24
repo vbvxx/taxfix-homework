@@ -2,7 +2,7 @@ import React from "react";
 import { RootState, RootActions } from "../redux/Store";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { updateBaseAmountActionCreator } from "../redux/currency/CurrencyActions";
+import { updateBaseCurrencyAmountActionCreator } from "../redux/currency/CurrencyActions";
 import {
   NativeSyntheticEvent,
   TextInputEndEditingEventData
@@ -61,7 +61,7 @@ const mapStateToProps = (state: RootState): StateProps => {
 const mapDispatchToProps = (dispatch: Dispatch<RootActions>): DispatchProps => {
   return {
     updateBaseAmount: (amount: number) => {
-      dispatch(updateBaseAmountActionCreator(amount));
+      dispatch(updateBaseCurrencyAmountActionCreator(amount));
     }
   };
 };

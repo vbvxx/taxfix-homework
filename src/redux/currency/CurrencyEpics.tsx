@@ -3,7 +3,7 @@ import { switchMap, map } from "rxjs/operators";
 import { Epic, ofType } from "redux-observable";
 import { RootState, RootActions } from "../store";
 import {
-  RatesActionTypes,
+  CurrencyActionTypes,
   fetchRatesSuccessActionCreator
 } from "./CurrencyActions";
 import { Rate } from "./CurrencyReducer";
@@ -13,7 +13,7 @@ export const fetchRateEpic: Epic<RootActions, RootActions, RootState> = (
   state
 ) => {
   return action$.pipe(
-    ofType(RatesActionTypes.FETCH_RATES),
+    ofType(CurrencyActionTypes.FETCH_RATES),
     switchMap((action$, index) => {
       return ajax.getJSON("https://txf-ecb.glitch.me/rates").pipe(
         map(response => {

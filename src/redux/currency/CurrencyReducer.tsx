@@ -1,5 +1,5 @@
 import { Reducer } from "redux";
-import { CurrencyActions, RatesActionTypes } from "./CurrencyActions";
+import { CurrencyActions, CurrencyActionTypes } from "./CurrencyActions";
 
 export interface Rate {
   currency: string;
@@ -31,25 +31,43 @@ export const currency: Reducer<CurrencyState, CurrencyActions> = (
   action
 ) => {
   switch (action.type) {
-    case RatesActionTypes.FETCH_RATES:
+    case CurrencyActionTypes.FETCH_RATES:
       return { ...state, isFetching: true };
-    case RatesActionTypes.FETCH_RATES_SUCCESS:
+    case CurrencyActionTypes.FETCH_RATES_SUCCESS:
       return {
         ...state,
         time: action.time,
         rates: action.rates,
         isFetching: false
       };
-    case RatesActionTypes.FETCH_RATES_FAILURE:
+    case CurrencyActionTypes.FETCH_RATES_FAILURE:
       return {
         ...state,
         errorMessage: action.err,
         isFetching: false
       };
-    case RatesActionTypes.UPDATE_BASE_CURRENCY_AMOUNT:
+    case CurrencyActionTypes.UPDATE_BASE_CURRENCY_AMOUNT:
       return {
         ...state,
         baseCurrencyAmount: action.amount
+      };
+    case CurrencyActionTypes.SAVE_BASE_CURRENCY:
+      return {
+        ...state,
+        selectedCurrency:
+          state.selectedCurrency === action.currency
+            ? state.baseCurrency
+            : state.selectedCurrency,
+        baseCurrency: action.currency
+      };
+    case CurrencyActionTypes.SAVE_SELECTED_CURRENCY:
+      return {
+        ...state,
+        baseCurrency:
+          state.baseCurrency === action.currency
+            ? state.selectedCurrency
+            : state.baseCurrency,
+        selectedCurrency: action.currency
       };
     default:
       return state;

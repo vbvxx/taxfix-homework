@@ -26,11 +26,12 @@ class CurrencySearchCellContainerPresenter extends React.PureComponent<Props> {
       : require("../Images/add.png");
 
     return (
-      <View style={styles.cellContainer}>
-        <View style={styles.textWrapperView}>
-          <Text style={styles.textStyle}>{this.props.currency}</Text>
-        </View>
-        <TouchableOpacity onPress={this.onButtonIcnPress}>
+      <TouchableOpacity onPress={this.onButtonIcnPress}>
+        <View style={styles.cellContainer}>
+          <View style={styles.textWrapperView}>
+            <Text style={styles.textStyle}>{this.props.currency}</Text>
+          </View>
+
           <Image
             source={cellRightButtonIcn}
             style={{
@@ -39,8 +40,8 @@ class CurrencySearchCellContainerPresenter extends React.PureComponent<Props> {
               width: 20
             }}
           />
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
     );
   }
 }

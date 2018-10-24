@@ -11,13 +11,17 @@ import SearchBarPresenter from "./SearchBarPresenter";
 import { RootState, RootActions } from "../redux/Store";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { getCurrencyArray } from "../redux/currency/CurrencyReducer";
+import { getCurrencyArray, currency } from "../redux/currency/CurrencyReducer";
 import CurrencySearchCellContainerPresenter from "./CurrencySearchCellContainerPresenter";
 import {
   updateSearchQueryActionCreator,
   updateSelectedCurrencyActionCreator,
   initSearchResultActionCreator
 } from "../redux/search/SearchActions";
+import {
+  saveBaseCurrencyActionCreator,
+  saveSelectedCurrencyActionCreator
+} from "../redux/currency/CurrencyActions";
 
 interface OwnProps {
   dismiss: () => void;
@@ -25,26 +29,26 @@ interface OwnProps {
 interface DispatchProps {
   updateSearchQuery: (searchQuery: string) => void;
   updateSelectedCurrency: (searchQuery: string) => void;
-  initSearchResults: (
-    searchResults: string[],
-    selectedCurrency: string
-  ) => void;
+  saveSelectedCurrency: (currency: string) => void;
+  saveBaseCurrency: (currency: string) => void;
 }
 interface StateProps {
   searchResults: string[];
   searchQuery: string;
   currencyInitialArray: string[];
   selectedCurrency: string;
+  isEditingBaseCurrency: boolean;
 }
 
 type Props = OwnProps & DispatchProps & StateProps;
 
 class CurrencySearchController extends React.Component<Props> {
-  componentDidMount() {
-    this.props.initSearchResults(this.props.currencyInitialArray, "EUR");
-  }
-
   onApplyPress = () => {
+    if (this.props.isEditingBaseCurrency) {
+      this.props.saveBaseCurrency(this.props.selectedCurrency);
+    } else {
+      this.props.saveSelectedCurrency(this.props.selectedCurrency);
+    }
     this.props.dismiss();
     this.props.updateSearchQuery("");
   };
@@ -111,7 +115,8 @@ const mapStateToProps = (state: RootState): StateProps => {
     currencyInitialArray: getCurrencyArray(state.currency),
     searchQuery: state.search.searchQuery,
     searchResults: state.search.searchResults,
-    selectedCurrency: state.search.selectedCurrency
+    selectedCurrency: state.search.selectedCurrency,
+    isEditingBaseCurrency: state.search.isEditingBaseCurrency
   };
 };
 
@@ -123,9 +128,12 @@ const mapDispatchToProps = (dispatch: Dispatch<RootActions>): DispatchProps => {
     updateSelectedCurrency: (selectedCurrency: string) => {
       dispatch(updateSelectedCurrencyActionCreator(selectedCurrency));
     },
-    initSearchResults: (searchResults: string[], selectedCurrency: string) => [
-      dispatch(initSearchResultActionCreator(searchResults, selectedCurrency))
-    ]
+    saveBaseCurrency: (currency: string) => {
+      dispatch(saveBaseCurrencyActionCreator(currency));
+    },
+    saveSelectedCurrency: (currency: string) => {
+      dispatch(saveSelectedCurrencyActionCreator(currency));
+    }
   };
 };
 

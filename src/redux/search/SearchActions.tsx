@@ -13,6 +13,7 @@ interface InitSearchResultAction {
   type: SearchActionTypes.INIT_SEARCH_RESULT;
   searchResults: string[];
   selectedCurrency: string;
+  isEditingBaseCurrency: boolean;
 }
 
 interface UpdateSelectedCurrencyAction {
@@ -36,12 +37,14 @@ export const updateSearchQueryActionCreator = (
 
 export const initSearchResultActionCreator = (
   searchResults: string[],
-  selectedCurrency: string
+  selectedCurrency: string,
+  isEditingBaseCurrency: boolean
 ): InitSearchResultAction => {
   return {
     type: SearchActionTypes.INIT_SEARCH_RESULT,
     searchResults: searchResults,
-    selectedCurrency: selectedCurrency
+    selectedCurrency: selectedCurrency,
+    isEditingBaseCurrency: isEditingBaseCurrency
   };
 };
 

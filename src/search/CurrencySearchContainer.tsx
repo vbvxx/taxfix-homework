@@ -16,7 +16,7 @@ import CurrencySearchCellContainerPresenter from "./CurrencySearchCellContainerP
 import {
   updateSearchQueryActionCreator,
   updateSelectedCurrencyActionCreator,
-  initSearchResultAction
+  initSearchResultActionCreator
 } from "../redux/search/SearchActions";
 
 interface OwnProps {
@@ -45,17 +45,24 @@ class CurrencySearchController extends React.Component<Props> {
   }
 
   onApplyPress = () => {
-    console.log("apply");
     this.props.dismiss();
+    this.props.updateSearchQuery("");
   };
 
   onCancelPress = () => {
-    console.log("Press");
     this.props.dismiss();
+    this.props.updateSearchQuery("");
   };
 
   handleSearchQuery = (text: string) => {
-    this.props.updateSearchQuery(text);
+    if (text === "") {
+      this.props.initSearchResults(
+        this.props.currencyInitialArray,
+        this.props.selectedCurrency
+      );
+    } else {
+      this.props.updateSearchQuery(text);
+    }
   };
 
   onPress = (currency: string) => {
@@ -124,7 +131,7 @@ const mapDispatchToProps = (dispatch: Dispatch<RootActions>): DispatchProps => {
       dispatch(updateSelectedCurrencyActionCreator(selectedCurrency));
     },
     initSearchResults: (searchResults: string[], selectedCurrency: string) => [
-      dispatch(initSearchResultAction(searchResults, selectedCurrency))
+      dispatch(initSearchResultActionCreator(searchResults, selectedCurrency))
     ]
   };
 };

@@ -34,7 +34,7 @@ export const updateSearchQueryActionCreator = (
   };
 };
 
-export const initSearchResultAction = (
+export const initSearchResultActionCreator = (
   searchResults: string[],
   selectedCurrency: string
 ): InitSearchResultAction => {

@@ -6,9 +6,11 @@ import { fetchRatesActionCreator } from "../redux/currency/CurrencyActions";
 import {
   Rate,
   getBaseRate,
-  getSelectedRate
+  getSelectedRate,
+  getCurrencyArray
 } from "../redux/currency/CurrencyReducer";
 import ConverterScreenPresenter from "./ConverterScreenPresenter";
+import { initSearchResultActionCreator } from "../redux/search/SearchActions";
 
 interface OwnProps {}
 
@@ -17,10 +19,15 @@ interface StateProps {
   baseRate?: Rate;
   selectedRate?: Rate;
   isFetching: boolean;
+  currencyArray: string[];
 }
 
 interface DispatchProps {
   fetchRatesActionCreator: () => void;
+  initSearchResults: (
+    searchResults: string[],
+    selectedCurrency: string
+  ) => void;
 }
 
 type Props = OwnProps & StateProps & DispatchProps;
@@ -30,6 +37,15 @@ class ConverterScreenContainer extends React.Component<Props> {
     this.props.fetchRatesActionCreator();
   }
 
+  onCurrencyCellPress = (fromBaseCurrency: boolean) => {
+    this.props.initSearchResults(
+      this.props.currencyArray,
+      fromBaseCurrency
+        ? this.props.baseRate!.currency
+        : this.props.selectedRate!.currency
+    );
+  };
+
   render() {
     const { lastTimeFetched, isFetching, baseRate, selectedRate } = this.props;
     return (
@@ -38,6 +54,7 @@ class ConverterScreenContainer extends React.Component<Props> {
         selectedRate={selectedRate}
         lastTimeFetched={lastTimeFetched}
         isFetching={isFetching}
+        onCurrencyCellPress={this.onCurrencyCellPress}
       />
     );
   }
@@ -48,7 +65,8 @@ const mapStateToProps = (state: RootState): StateProps => {
     lastTimeFetched: state.currency.time,
     baseRate: getBaseRate(state.currency),
     selectedRate: getSelectedRate(state.currency),
-    isFetching: state.currency.isFetching
+    isFetching: state.currency.isFetching,
+    currencyArray: getCurrencyArray(state.currency)
   };
 };
 
@@ -56,7 +74,10 @@ const mapDispatchToProps = (dispatch: Dispatch<RootActions>): DispatchProps => {
   return {
     fetchRatesActionCreator: () => {
       dispatch(fetchRatesActionCreator());
-    }
+    },
+    initSearchResults: (searchResults: string[], selectedCurrency: string) => [
+      dispatch(initSearchResultActionCreator(searchResults, selectedCurrency))
+    ]
   };
 };
 

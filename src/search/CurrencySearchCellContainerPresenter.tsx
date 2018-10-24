@@ -21,7 +21,6 @@ class CurrencySearchCellContainerPresenter extends React.PureComponent<Props> {
   };
 
   render() {
-    console.log(this.props.isSelected, this.props.currency);
     const cellRightButtonIcn = this.props.isSelected
       ? require("../Images/remove.png")
       : require("../Images/add.png");

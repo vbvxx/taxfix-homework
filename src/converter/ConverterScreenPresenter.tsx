@@ -12,6 +12,7 @@ interface OwnProps {
   selectedRate?: Rate;
   isFetching: boolean;
   errorMessage?: string;
+  onCurrencyCellPress: (fromBaseCurrency: boolean) => void;
 }
 
 interface State {
@@ -44,7 +45,8 @@ class ConverterScreenPresenter extends React.Component<OwnProps, State> {
     this.setState({ modalVisible: false });
   };
 
-  showModal = () => {
+  onCellPress = (currency: string) => {
+    this.props.onCurrencyCellPress(currency === this.props.baseRate!.currency);
     this.setState({ modalVisible: true });
   };
 
@@ -87,12 +89,12 @@ class ConverterScreenPresenter extends React.Component<OwnProps, State> {
             <CurrencyCellPresenter
               name={baseRate!.currency}
               rate={baseRate!.rate.toString()}
-              onPress={this.showModal}
+              onPress={this.onCellPress}
             />
             <CurrencyCellPresenter
               name={selectedRate!.currency}
               rate={selectedRate!.rate.toString()}
-              onPress={this.showModal}
+              onPress={this.onCellPress}
             />
           </View>
           <AmountPickerContainer />

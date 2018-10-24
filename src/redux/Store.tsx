@@ -1,18 +1,21 @@
-import { createStore, applyMiddleware, combineReducers, Reducer } from "redux";
-import { CurrencyState, rates } from "./currency/CurrencyReducer";
+import { createStore, applyMiddleware, combineReducers } from "redux";
+import { CurrencyState, currency } from "./currency/CurrencyReducer";
 import { CurrencyActions } from "./currency/CurrencyActions";
 import { fetchRateEpic } from "./currency/CurrencyEpics";
 import { createEpicMiddleware, combineEpics } from "redux-observable";
+import { SearchState, search } from "./search/SearchReducer";
+import { SearchActions } from "./search/SearchActions";
 
-export type RootActions = CurrencyActions;
+export type RootActions = CurrencyActions | SearchActions;
 
 // Root reducer
 
 export interface RootState {
-  rates: CurrencyState;
+  currency: CurrencyState;
+  search: SearchState;
 }
 
-const rootReducer = combineReducers({ rates });
+const rootReducer = combineReducers({ currency, search });
 
 // Root epic
 

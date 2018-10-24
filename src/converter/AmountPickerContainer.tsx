@@ -51,10 +51,10 @@ class AmountPickerContainer extends React.Component<Props> {
 
 const mapStateToProps = (state: RootState): StateProps => {
   return {
-    baseCurrency: state.rates.baseCurrency,
-    baseAmount: state.rates.baseCurrencyAmount,
-    selectedCurrency: state.rates.selectedCurrency,
-    convertedAmount: getConvertedAmount(state.rates)
+    baseCurrency: state.currency.baseCurrency,
+    baseAmount: state.currency.baseCurrencyAmount,
+    selectedCurrency: state.currency.selectedCurrency,
+    convertedAmount: getConvertedAmount(state.currency)
   };
 };
 

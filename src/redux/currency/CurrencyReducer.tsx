@@ -26,7 +26,7 @@ const defaultValue = {
   isFetching: false
 };
 
-export const rates: Reducer<CurrencyState, CurrencyActions> = (
+export const currency: Reducer<CurrencyState, CurrencyActions> = (
   state = defaultValue,
   action
 ) => {
@@ -86,4 +86,8 @@ export const getSelectedRate = (state: CurrencyState): Rate | undefined => {
     )[0];
   }
   return undefined;
+};
+
+export const getCurrencyArray = (state: CurrencyState): string[] => {
+  return state.rates.map(elem => elem.currency);
 };

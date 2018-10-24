@@ -6,6 +6,7 @@ import { darkGreyColour } from "../Constants";
 interface OwnProps {
   onCancelPress: () => void;
   onApplyPress: () => void;
+  isSaveDisabled: boolean;
 }
 
 const TopBarPresenter: React.SFC<OwnProps> = props => {
@@ -13,7 +14,8 @@ const TopBarPresenter: React.SFC<OwnProps> = props => {
     <View
       style={{
         flexDirection: "row",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        marginHorizontal: 20
       }}
     >
       <Button
@@ -29,6 +31,7 @@ const TopBarPresenter: React.SFC<OwnProps> = props => {
         transparent
         onPress={props.onApplyPress}
         color="#ffffff"
+        disabled={props.isSaveDisabled}
       >
         <Text style={styles.buttonLabel}>{"Apply"}</Text>
       </Button>

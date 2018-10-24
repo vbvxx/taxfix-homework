@@ -45,10 +45,10 @@ class ConverterScreenContainer extends React.Component<Props> {
 
 const mapStateToProps = (state: RootState): StateProps => {
   return {
-    lastTimeFetched: state.rates.time,
-    baseRate: getBaseRate(state.rates),
-    selectedRate: getSelectedRate(state.rates),
-    isFetching: state.rates.isFetching
+    lastTimeFetched: state.currency.time,
+    baseRate: getBaseRate(state.currency),
+    selectedRate: getSelectedRate(state.currency),
+    isFetching: state.currency.isFetching
   };
 };
 

@@ -21,7 +21,7 @@ const SearchBarPresenter: React.SFC<OwnProps> = props => {
         value={searchQuery}
         onChangeText={handleSearchQuery}
         //@ts-ignore
-        platform="default"
+        // platform="default"
       />
     </View>
   );

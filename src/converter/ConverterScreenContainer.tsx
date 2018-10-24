@@ -5,13 +5,15 @@ import { RootState, RootActions } from "../redux/Store";
 import { Dispatch } from "redux";
 import { fetchRatesActionCreator } from "../redux/currency/RatesActions";
 import { Rate } from "../redux/currency/RatesReducer";
+import ConverterScreenPresenter from "./ConverterScreenPresenter";
 
 interface OwnProps {}
 
 interface StateProps {
-  lastTimeFetched?: Date;
+  lastTimeFetched: string;
   base: string;
   rates: Rate[];
+  isFetching: boolean;
 }
 
 interface DispatchProps {
@@ -26,17 +28,15 @@ class ConverterScreenContainer extends React.Component<Props> {
   }
 
   render() {
-    const { lastTimeFetched, base, rates } = this.props;
+    const { lastTimeFetched, base, rates, isFetching } = this.props;
 
     return (
-      <View>
-        <Text>
-          {lastTimeFetched && lastTimeFetched.toString()}
-          {base}
-          {rates.length > 0 && rates[0].currency}
-          {rates.length > 0 && rates[0].rate}
-        </Text>
-      </View>
+      <ConverterScreenPresenter
+        baseRate={{ currency: "EUR", rate: 1.0 }}
+        selectedRate={{ currency: "EUR", rate: 1.0 }}
+        lastTimeFetched={lastTimeFetched}
+        isFetching={isFetching}
+      />
     );
   }
 }
@@ -45,7 +45,8 @@ const mapStateToProps = (state: RootState): StateProps => {
   return {
     lastTimeFetched: state.rates.time,
     base: state.rates.base,
-    rates: state.rates.rates
+    rates: state.rates.rates,
+    isFetching: state.rates.isFetching
   };
 };
 

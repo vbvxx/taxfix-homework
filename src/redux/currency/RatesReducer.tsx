@@ -64,16 +64,12 @@ export const getConvertedAmount = (state: RatesState): number => {
     const targetRate = state.rates.filter(
       elem => elem.currency === state.selectedCurrency
     )[0].rate;
-    console.log(targetRate);
-    console.log(state.rates);
     const baseRate = state.rates.filter(
       elem => elem.currency === state.baseCurrency
     )[0].rate;
-    console.log(baseRate);
 
-    const convertedAmount = state.baseAmount * (baseRate / targetRate);
-
-    return convertedAmount;
+    const convertedAmount = state.baseAmount * (targetRate / baseRate);
+    return +convertedAmount.toPrecision(6);
   } else {
     return 0;
   }

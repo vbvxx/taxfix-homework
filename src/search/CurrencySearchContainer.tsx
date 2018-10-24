@@ -55,14 +55,7 @@ class CurrencySearchController extends React.Component<Props> {
   };
 
   handleSearchQuery = (text: string) => {
-    if (text === "") {
-      this.props.initSearchResults(
-        this.props.currencyInitialArray,
-        this.props.selectedCurrency
-      );
-    } else {
-      this.props.updateSearchQuery(text);
-    }
+    this.props.updateSearchQuery(text);
   };
 
   onPress = (currency: string) => {
@@ -93,7 +86,7 @@ class CurrencySearchController extends React.Component<Props> {
         <TopBarPresenter
           onApplyPress={this.onApplyPress}
           onCancelPress={this.onCancelPress}
-          isSaveDisabled={this.props.selectedCurrency !== ""}
+          isSaveDisabled={this.props.selectedCurrency === ""}
         />
         <SearchBarPresenter
           handleSearchQuery={this.handleSearchQuery}

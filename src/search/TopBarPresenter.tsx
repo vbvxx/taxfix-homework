@@ -10,6 +10,9 @@ interface OwnProps {
 }
 
 const TopBarPresenter: React.SFC<OwnProps> = props => {
+  const applyButtonColor = props.isSaveDisabled
+    ? { color: "#89898950" }
+    : { color: darkGreyColour };
   return (
     <View
       style={{
@@ -33,7 +36,7 @@ const TopBarPresenter: React.SFC<OwnProps> = props => {
         color="#ffffff"
         disabled={props.isSaveDisabled}
       >
-        <Text style={styles.buttonLabel}>{"Apply"}</Text>
+        <Text style={applyButtonColor}>{"Apply"}</Text>
       </Button>
     </View>
   );

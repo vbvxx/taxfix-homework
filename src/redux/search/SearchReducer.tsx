@@ -2,12 +2,14 @@ import { Reducer } from "redux";
 import { SearchActions, SearchActionTypes } from "./SearchActions";
 
 export interface SearchState {
+  initialArray: string[];
   searchResults: string[];
   selectedCurrency: string;
   searchQuery: string;
 }
 
 const initialState: SearchState = {
+  initialArray: [],
   searchResults: [],
   selectedCurrency: "",
   searchQuery: ""
@@ -21,17 +23,25 @@ export const search: Reducer<SearchState, SearchActions> = (
     case SearchActionTypes.INIT_SEARCH_RESULT:
       return {
         ...state,
+        initialArray: [...action.searchResults],
         searchResults: [...action.searchResults],
         selectedCurrency: action.selectedCurrency
       };
     case SearchActionTypes.UPDATE_SEARCH_QUERY:
+      let searchResults = [];
+      if (action.searchQuery === "") {
+        searchResults = state.initialArray;
+      } else {
+        searchResults = state.initialArray.filter(currency =>
+          currency.toLowerCase().includes(action.searchQuery.toLowerCase())
+        );
+      }
       return {
         ...state,
         searchQuery: action.searchQuery,
-        searchResults: state.searchResults.filter(currency =>
-          currency.toLowerCase().includes(action.searchQuery.toLowerCase())
-        )
+        searchResults: searchResults
       };
+
     case SearchActionTypes.UPDATE_SELECTED_CURRENCY:
       return {
         ...state,

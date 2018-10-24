@@ -1,15 +1,15 @@
 import { createStore, applyMiddleware, combineReducers, Reducer } from "redux";
-import { RatesState, rates } from "./currency/RatesReducer";
-import { RatesActions } from "./currency/RatesActions";
-import { fetchRateEpic } from "../redux/currency/RatesEpics";
+import { CurrencyState, rates } from "./currency/CurrencyReducer";
+import { CurrencyActions } from "./currency/CurrencyActions";
+import { fetchRateEpic } from "./currency/CurrencyEpics";
 import { createEpicMiddleware, combineEpics } from "redux-observable";
 
-export type RootActions = RatesActions;
+export type RootActions = CurrencyActions;
 
 // Root reducer
 
 export interface RootState {
-  rates: RatesState;
+  rates: CurrencyState;
 }
 
 const rootReducer = combineReducers({ rates });

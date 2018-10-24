@@ -1,13 +1,12 @@
 import { ajax } from "rxjs/ajax";
 import { switchMap, map } from "rxjs/operators";
-import { Epic, ofType, combineEpics } from "redux-observable";
+import { Epic, ofType } from "redux-observable";
 import { RootState, RootActions } from "../store";
 import {
   RatesActionTypes,
   fetchRatesSuccessActionCreator
-} from "./RatesActions";
-import { Rate } from "./RatesReducer";
-// import { TestActionTypes, syncActionCreator } from "../actions";
+} from "./CurrencyActions";
+import { Rate } from "./CurrencyReducer";
 
 export const fetchRateEpic: Epic<RootActions, RootActions, RootState> = (
   action$,
@@ -20,13 +19,11 @@ export const fetchRateEpic: Epic<RootActions, RootActions, RootState> = (
         map(response => {
           let mappedResponse = response as {
             time: string;
-            base: string;
             rates: Rate[];
           };
           mappedResponse.rates.push({ currency: "EUR", rate: 1 });
           return fetchRatesSuccessActionCreator(
             mappedResponse.time,
-            mappedResponse.base,
             mappedResponse.rates
           );
         })

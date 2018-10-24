@@ -1,14 +1,13 @@
 import React from "react";
-import { Text, View } from "react-native";
 import { connect } from "react-redux";
 import { RootState, RootActions } from "../redux/Store";
 import { Dispatch } from "redux";
-import { fetchRatesActionCreator } from "../redux/currency/RatesActions";
+import { fetchRatesActionCreator } from "../redux/currency/CurrencyActions";
 import {
   Rate,
   getBaseRate,
   getSelectedRate
-} from "../redux/currency/RatesReducer";
+} from "../redux/currency/CurrencyReducer";
 import ConverterScreenPresenter from "./ConverterScreenPresenter";
 
 interface OwnProps {}

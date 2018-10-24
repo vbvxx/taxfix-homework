@@ -1,33 +1,32 @@
 import { Reducer } from "redux";
-import { RatesActions, RatesActionTypes } from "./RatesActions";
-import { StateObservable } from "redux-observable";
+import { CurrencyActions, RatesActionTypes } from "./CurrencyActions";
 
 export interface Rate {
   currency: string;
   rate: number;
 }
 
-export interface RatesState {
+export interface CurrencyState {
   time: string;
   baseCurrency: string;
-  baseAmount: number;
+  baseCurrencyAmount: number;
+  selectedCurrency: string;
   rates: Rate[];
   errorMessage?: string;
   isFetching: boolean;
-  selectedCurrency: string;
 }
 
 const defaultValue = {
   time: "",
-  baseCurrency: "USD",
-  baseAmount: 1,
+  baseCurrency: "EUR",
+  baseCurrencyAmount: 1,
+  selectedCurrency: "USD",
   rates: [],
   errorMessage: undefined,
-  isFetching: false,
-  selectedCurrency: "JPY"
+  isFetching: false
 };
 
-export const rates: Reducer<RatesState, RatesActions> = (
+export const rates: Reducer<CurrencyState, CurrencyActions> = (
   state = defaultValue,
   action
 ) => {
@@ -38,7 +37,6 @@ export const rates: Reducer<RatesState, RatesActions> = (
       return {
         ...state,
         time: action.time,
-        baseCurrency: action.base,
         rates: action.rates,
         isFetching: false
       };
@@ -48,18 +46,17 @@ export const rates: Reducer<RatesState, RatesActions> = (
         errorMessage: action.err,
         isFetching: false
       };
-    case RatesActionTypes.UPDATE_BASE_AMOUNT:
+    case RatesActionTypes.UPDATE_BASE_CURRENCY_AMOUNT:
       return {
         ...state,
-        baseAmount: action.amount
+        baseCurrencyAmount: action.amount
       };
     default:
       return state;
   }
 };
 
-export const getConvertedAmount = (state: RatesState): number => {
-  console.log(state);
+export const getConvertedAmount = (state: CurrencyState): number => {
   if (state.rates.length > 0) {
     const targetRate = state.rates.filter(
       elem => elem.currency === state.selectedCurrency
@@ -68,21 +65,21 @@ export const getConvertedAmount = (state: RatesState): number => {
       elem => elem.currency === state.baseCurrency
     )[0].rate;
 
-    const convertedAmount = state.baseAmount * (targetRate / baseRate);
+    const convertedAmount = state.baseCurrencyAmount * (targetRate / baseRate);
     return +convertedAmount.toPrecision(6);
   } else {
     return 0;
   }
 };
 
-export const getBaseRate = (state: RatesState): Rate | undefined => {
+export const getBaseRate = (state: CurrencyState): Rate | undefined => {
   if (state.rates.length > 0) {
     return state.rates.filter(elem => elem.currency === state.baseCurrency)[0];
   }
   return undefined;
 };
 
-export const getSelectedRate = (state: RatesState): Rate | undefined => {
+export const getSelectedRate = (state: CurrencyState): Rate | undefined => {
   if (state.rates.length > 0) {
     return state.rates.filter(
       elem => elem.currency === state.selectedCurrency

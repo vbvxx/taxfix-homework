@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import CurrencyCellPresenter from "./CurrencyCellPresenter";
-import { Rate } from "../redux/currency/RatesReducer";
+import { Rate } from "../redux/currency/CurrencyReducer";
 import { greyColour } from "../Constants";
 import AmountPickerContainer from "./AmountPickerContainer";
 

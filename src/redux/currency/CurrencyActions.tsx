@@ -1,4 +1,4 @@
-import { Rate } from "./RatesReducer";
+import { Rate } from "./CurrencyReducer";
 
 // Actions
 
@@ -6,7 +6,7 @@ export enum RatesActionTypes {
   FETCH_RATES = "[rates] FETCH_RATES",
   FETCH_RATES_SUCCESS = "[rates] FETCH_RATES_SUCCESS",
   FETCH_RATES_FAILURE = "[rates] FETCH_RATES_FAILURE",
-  UPDATE_BASE_AMOUNT = "[rates] UPDATE_BASE_AMOUNT",
+  UPDATE_BASE_CURRENCY_AMOUNT = "[rates] UPDATE_BASE_CURRENCY_AMOUNT",
   UPDATE_SELECTED_RATE = "[rates] UPDATE_SELECTED_RATE",
   UPDATE_BASE_RATE = "[rates] UPDATE_BASE_RATE"
 }
@@ -18,7 +18,6 @@ interface FetchRatesAction {
 interface FetchRatesSuccessAction {
   type: RatesActionTypes.FETCH_RATES_SUCCESS;
   time: string;
-  base: string;
   rates: Rate[];
 }
 
@@ -27,16 +26,16 @@ interface FetchRatesFailureAction {
   err: string;
 }
 
-interface UpdateBaseAmountAction {
-  type: RatesActionTypes.UPDATE_BASE_AMOUNT;
+interface UpdateBaseCurrencyAmountAction {
+  type: RatesActionTypes.UPDATE_BASE_CURRENCY_AMOUNT;
   amount: number;
 }
 
-export type RatesActions =
+export type CurrencyActions =
   | FetchRatesAction
   | FetchRatesSuccessAction
   | FetchRatesFailureAction
-  | UpdateBaseAmountAction;
+  | UpdateBaseCurrencyAmountAction;
 
 // Action creators
 
@@ -48,13 +47,11 @@ export const fetchRatesActionCreator = (): FetchRatesAction => {
 
 export const fetchRatesSuccessActionCreator = (
   time: string,
-  base: string,
   rates: Rate[]
 ): FetchRatesSuccessAction => {
   return {
     type: RatesActionTypes.FETCH_RATES_SUCCESS,
     time: time,
-    base: base,
     rates: rates
   };
 };
@@ -70,9 +67,9 @@ export const fetchRatesFailureActionCreator = (
 
 export const updateBaseAmountActionCreator = (
   amount: number
-): UpdateBaseAmountAction => {
+): UpdateBaseCurrencyAmountAction => {
   return {
-    type: RatesActionTypes.UPDATE_BASE_AMOUNT,
+    type: RatesActionTypes.UPDATE_BASE_CURRENCY_AMOUNT,
     amount: amount
   };
 };

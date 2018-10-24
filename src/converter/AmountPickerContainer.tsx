@@ -2,13 +2,13 @@ import React from "react";
 import { RootState, RootActions } from "../redux/Store";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
-import { updateBaseAmountActionCreator } from "../redux/currency/RatesActions";
+import { updateBaseAmountActionCreator } from "../redux/currency/CurrencyActions";
 import {
   NativeSyntheticEvent,
   TextInputEndEditingEventData
 } from "react-native";
 import AmountPickerPresenter from "./AmountPickerPresenter";
-import { getConvertedAmount } from "../redux/currency/RatesReducer";
+import { getConvertedAmount } from "../redux/currency/CurrencyReducer";
 
 interface OwnProps {}
 
@@ -52,7 +52,7 @@ class AmountPickerContainer extends React.Component<Props> {
 const mapStateToProps = (state: RootState): StateProps => {
   return {
     baseCurrency: state.rates.baseCurrency,
-    baseAmount: state.rates.baseAmount,
+    baseAmount: state.rates.baseCurrencyAmount,
     selectedCurrency: state.rates.selectedCurrency,
     convertedAmount: getConvertedAmount(state.rates)
   };

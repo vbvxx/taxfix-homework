@@ -8,7 +8,7 @@ import {
   TextInputEndEditingEventData
 } from "react-native";
 import { mediumGreyColour, darkGreyColour, greyColour } from "../Constants";
-import { Rate } from "../redux/currency/RatesReducer";
+import { Rate } from "../redux/currency/CurrencyReducer";
 
 interface OwnProps {
   baseCurrency: string;

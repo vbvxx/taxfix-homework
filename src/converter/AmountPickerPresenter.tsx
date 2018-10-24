@@ -1,17 +1,43 @@
 import React from "react";
-import { View, TextInput, Text, StyleSheet } from "react-native";
+import {
+  View,
+  TextInput,
+  Text,
+  StyleSheet,
+  NativeSyntheticEvent,
+  TextInputEndEditingEventData
+} from "react-native";
 import { mediumGreyColour, darkGreyColour, greyColour } from "../Constants";
+import { Rate } from "../redux/currency/RatesReducer";
 
-const AmountPickerPresenter: React.SFC<{}> = props => {
+interface OwnProps {
+  baseCurrency: string;
+  selectedCurrency: string;
+  baseAmount: string;
+  convertedAmount: string;
+  onEndEditing: (e: NativeSyntheticEvent<TextInputEndEditingEventData>) => void;
+}
+
+const AmountPickerPresenter: React.SFC<OwnProps> = props => {
+  const { baseCurrency, selectedCurrency, baseAmount, convertedAmount } = props;
   return (
     <View style={{ flexDirection: "row", justifyContent: "center" }}>
       <View style={styles.container}>
-        <TextInput style={styles.textInput} />
-        <Text style={styles.fontColor}>EUR</Text>
+        <TextInput
+          style={styles.textInput}
+          editable={true}
+          defaultValue={baseAmount}
+          onEndEditing={props.onEndEditing}
+          underlineColorAndroid="transparent"
+          keyboardType="numeric"
+        />
+        <Text style={styles.fontColor}>{baseCurrency}</Text>
       </View>
       <View style={[styles.container, { justifyContent: "flex-start" }]}>
-        <Text style={[styles.convertedAmountLabel, styles.fontColor]}>1</Text>
-        <Text style={styles.fontColor}>EUR</Text>
+        <Text style={[styles.convertedAmountLabel, styles.fontColor]}>
+          {convertedAmount}
+        </Text>
+        <Text style={styles.fontColor}>{selectedCurrency}</Text>
       </View>
     </View>
   );
@@ -23,18 +49,18 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "flex-end",
-    marginHorizontal: 6
+    marginHorizontal: 24
   },
   textInput: {
     borderWidth: 0.5,
     borderColor: mediumGreyColour,
-    width: 70,
+    flex: 1,
     height: 35,
     marginRight: 6,
     textAlign: "center"
   },
   convertedAmountLabel: {
-    width: 68,
+    flex: 1,
     marginRight: 6,
     textAlign: "center",
     borderBottomWidth: 1,

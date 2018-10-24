@@ -3,13 +3,14 @@ import { View, StyleSheet, Text } from "react-native";
 import CurrencyCellPresenter from "./CurrencyCellPresenter";
 import { Rate } from "../redux/currency/RatesReducer";
 import { greyColour } from "../Constants";
-import AmountPickerPresenter from "./AmountPickerPresenter";
+import AmountPickerContainer from "./AmountPickerContainer";
 
 interface OwnProps {
   lastTimeFetched: string;
-  baseRate: Rate;
-  selectedRate: Rate;
+  baseRate?: Rate;
+  selectedRate?: Rate;
   isFetching: boolean;
+  errorMessage?: string;
 }
 
 const PresenterContainer: React.SFC<{ lastTimeFetched: string }> = props => (
@@ -20,29 +21,43 @@ const PresenterContainer: React.SFC<{ lastTimeFetched: string }> = props => (
 );
 
 const ConverterScreenPresenter: React.SFC<OwnProps> = props => {
-  const { lastTimeFetched, baseRate, selectedRate, isFetching } = props;
+  const {
+    lastTimeFetched,
+    baseRate,
+    selectedRate,
+    isFetching,
+    errorMessage
+  } = props;
   if (isFetching) {
     return (
       <PresenterContainer lastTimeFetched={lastTimeFetched}>
         <Text style={styles.title}>{"FETCHING DATA ..."}</Text>
       </PresenterContainer>
     );
-  } else {
+  } else if (errorMessage !== undefined) {
+    return (
+      <PresenterContainer lastTimeFetched={lastTimeFetched}>
+        <Text style={styles.title}>{errorMessage}</Text>
+      </PresenterContainer>
+    );
+  } else if (baseRate !== undefined && selectedRate !== undefined) {
     return (
       <PresenterContainer lastTimeFetched={lastTimeFetched}>
         <View style={styles.rates}>
           <CurrencyCellPresenter
-            name={baseRate.currency}
-            rate={baseRate.rate.toString()}
+            name={baseRate!.currency}
+            rate={baseRate!.rate.toString()}
           />
           <CurrencyCellPresenter
-            name={selectedRate.currency}
-            rate={selectedRate.rate.toString()}
+            name={selectedRate!.currency}
+            rate={selectedRate!.rate.toString()}
           />
         </View>
-        <AmountPickerPresenter />
+        <AmountPickerContainer />
       </PresenterContainer>
     );
+  } else {
+    return null;
   }
 };
 

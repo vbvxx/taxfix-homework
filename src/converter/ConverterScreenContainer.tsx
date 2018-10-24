@@ -4,15 +4,19 @@ import { connect } from "react-redux";
 import { RootState, RootActions } from "../redux/Store";
 import { Dispatch } from "redux";
 import { fetchRatesActionCreator } from "../redux/currency/RatesActions";
-import { Rate } from "../redux/currency/RatesReducer";
+import {
+  Rate,
+  getBaseRate,
+  getSelectedRate
+} from "../redux/currency/RatesReducer";
 import ConverterScreenPresenter from "./ConverterScreenPresenter";
 
 interface OwnProps {}
 
 interface StateProps {
   lastTimeFetched: string;
-  base: string;
-  rates: Rate[];
+  baseRate?: Rate;
+  selectedRate?: Rate;
   isFetching: boolean;
 }
 
@@ -28,12 +32,11 @@ class ConverterScreenContainer extends React.Component<Props> {
   }
 
   render() {
-    const { lastTimeFetched, base, rates, isFetching } = this.props;
-
+    const { lastTimeFetched, isFetching, baseRate, selectedRate } = this.props;
     return (
       <ConverterScreenPresenter
-        baseRate={{ currency: "EUR", rate: 1.0 }}
-        selectedRate={{ currency: "EUR", rate: 1.0 }}
+        baseRate={baseRate}
+        selectedRate={selectedRate}
         lastTimeFetched={lastTimeFetched}
         isFetching={isFetching}
       />
@@ -44,8 +47,8 @@ class ConverterScreenContainer extends React.Component<Props> {
 const mapStateToProps = (state: RootState): StateProps => {
   return {
     lastTimeFetched: state.rates.time,
-    base: state.rates.base,
-    rates: state.rates.rates,
+    baseRate: getBaseRate(state.rates),
+    selectedRate: getSelectedRate(state.rates),
     isFetching: state.rates.isFetching
   };
 };

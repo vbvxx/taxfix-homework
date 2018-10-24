@@ -1,12 +1,14 @@
 import { ajax } from "rxjs/ajax";
-import { switchMap, map } from "rxjs/operators";
+import { switchMap, map, catchError } from "rxjs/operators";
 import { Epic, ofType } from "redux-observable";
 import { RootState, RootActions } from "../store";
 import {
   CurrencyActionTypes,
-  fetchRatesSuccessActionCreator
+  fetchRatesSuccessActionCreator,
+  fetchRatesFailureActionCreator
 } from "./CurrencyActions";
 import { Rate } from "./CurrencyReducer";
+import { of } from "rxjs";
 
 export const fetchRateEpic: Epic<RootActions, RootActions, RootState> = (
   action$,
@@ -26,7 +28,10 @@ export const fetchRateEpic: Epic<RootActions, RootActions, RootState> = (
             mappedResponse.time,
             mappedResponse.rates
           );
-        })
+        }),
+        catchError(error =>
+          of(fetchRatesFailureActionCreator(error.xhr.response))
+        )
       );
     })
   );

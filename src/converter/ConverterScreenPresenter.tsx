@@ -1,9 +1,10 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Modal } from "react-native";
 import CurrencyCellPresenter from "./CurrencyCellPresenter";
 import { Rate } from "../redux/currency/CurrencyReducer";
 import { greyColour } from "../Constants";
 import AmountPickerContainer from "./AmountPickerContainer";
+import CurrencySearchController from "../search/CurrencySearchContainer";
 
 interface OwnProps {
   lastTimeFetched: string;
@@ -13,53 +14,95 @@ interface OwnProps {
   errorMessage?: string;
 }
 
-const PresenterContainer: React.SFC<{ lastTimeFetched: string }> = props => (
+interface State {
+  modalVisible: boolean;
+}
+
+const PresenterContainer: React.SFC<{
+  lastTimeFetched: string;
+  dismiss: () => void;
+  modalVisible: boolean;
+}> = props => (
   <View style={styles.container}>
     <Text style={styles.title}>{`Last updated: ${props.lastTimeFetched}`}</Text>
     {props.children}
+    <Modal
+      animationType="slide"
+      transparent={false}
+      visible={props.modalVisible}
+      onRequestClose={() => {}}
+    >
+      <CurrencySearchController dismiss={props.dismiss} />
+    </Modal>
   </View>
 );
 
-const ConverterScreenPresenter: React.SFC<OwnProps> = props => {
-  const {
-    lastTimeFetched,
-    baseRate,
-    selectedRate,
-    isFetching,
-    errorMessage
-  } = props;
-  if (isFetching) {
-    return (
-      <PresenterContainer lastTimeFetched={lastTimeFetched}>
-        <Text style={styles.title}>{"FETCHING DATA ..."}</Text>
-      </PresenterContainer>
-    );
-  } else if (errorMessage !== undefined) {
-    return (
-      <PresenterContainer lastTimeFetched={lastTimeFetched}>
-        <Text style={styles.title}>{errorMessage}</Text>
-      </PresenterContainer>
-    );
-  } else if (baseRate !== undefined && selectedRate !== undefined) {
-    return (
-      <PresenterContainer lastTimeFetched={lastTimeFetched}>
-        <View style={styles.rates}>
-          <CurrencyCellPresenter
-            name={baseRate!.currency}
-            rate={baseRate!.rate.toString()}
-          />
-          <CurrencyCellPresenter
-            name={selectedRate!.currency}
-            rate={selectedRate!.rate.toString()}
-          />
-        </View>
-        <AmountPickerContainer />
-      </PresenterContainer>
-    );
-  } else {
-    return null;
+class ConverterScreenPresenter extends React.Component<OwnProps, State> {
+  state = { modalVisible: false };
+
+  dismissModal = () => {
+    this.setState({ modalVisible: false });
+  };
+
+  showModal = () => {
+    this.setState({ modalVisible: true });
+  };
+
+  render() {
+    const {
+      lastTimeFetched,
+      baseRate,
+      selectedRate,
+      isFetching,
+      errorMessage
+    } = this.props;
+    if (isFetching) {
+      return (
+        <PresenterContainer
+          lastTimeFetched={lastTimeFetched}
+          dismiss={this.dismissModal}
+          modalVisible={this.state.modalVisible}
+        >
+          <Text style={styles.title}>{"FETCHING DATA ..."}</Text>
+        </PresenterContainer>
+      );
+    } else if (errorMessage !== undefined) {
+      return (
+        <PresenterContainer
+          lastTimeFetched={lastTimeFetched}
+          dismiss={this.dismissModal}
+          modalVisible={this.state.modalVisible}
+        >
+          <Text style={styles.title}>{errorMessage}</Text>
+        </PresenterContainer>
+      );
+    } else if (baseRate !== undefined && selectedRate !== undefined) {
+      return (
+        <PresenterContainer
+          lastTimeFetched={lastTimeFetched}
+          dismiss={this.dismissModal}
+          modalVisible={this.state.modalVisible}
+        >
+          <View style={styles.rates}>
+            <CurrencyCellPresenter
+              name={baseRate!.currency}
+              rate={baseRate!.rate.toString()}
+              onPress={this.showModal}
+            />
+            <CurrencyCellPresenter
+              name={selectedRate!.currency}
+              rate={selectedRate!.rate.toString()}
+              onPress={this.showModal}
+            />
+          </View>
+          <AmountPickerContainer />
+        </PresenterContainer>
+      );
+    } else {
+      return null;
+    }
   }
-};
+}
 
 const styles = StyleSheet.create({
   container: {

@@ -5,15 +5,14 @@ import { ultraLightGreyColour, darkGreyColour } from "../Constants";
 interface OwnProps {
   name: string;
   rate: string;
+  onPress: () => void;
 }
 
 const CurrencyCellPresenter: React.SFC<OwnProps> = props => {
   return (
     <TouchableHighlight
       style={styles.button}
-      onPress={() => {
-        console.log("here");
-      }}
+      onPress={props.onPress}
       underlayColor="#FFFFFF00"
     >
       <View style={styles.container}>

@@ -6,6 +6,7 @@ import {
   RatesActionTypes,
   fetchRatesSuccessActionCreator
 } from "./RatesActions";
+import { Rate } from "./RatesReducer";
 // import { TestActionTypes, syncActionCreator } from "../actions";
 
 export const fetchRateEpic: Epic<RootActions, RootActions, RootState> = (
@@ -17,8 +18,17 @@ export const fetchRateEpic: Epic<RootActions, RootActions, RootState> = (
     switchMap((action$, index) => {
       return ajax.getJSON("https://txf-ecb.glitch.me/rates").pipe(
         map(response => {
+          let mappedResponse = response as {
+            time: string;
+            base: string;
+            rates: Rate[];
+          };
           console.log(response);
-          return fetchRatesSuccessActionCreator(new Date(), "EUR", []);
+          return fetchRatesSuccessActionCreator(
+            new Date(mappedResponse.time),
+            mappedResponse.base,
+            mappedResponse.rates
+          );
         })
       );
     })

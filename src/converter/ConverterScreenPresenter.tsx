@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import CurrencyCellPresenter from "./CurrencyCellPresenter";
 import { Rate } from "../redux/currency/RatesReducer";
 import { greyColour } from "../Constants";
+import AmountPickerPresenter from "./AmountPickerPresenter";
 
 interface OwnProps {
   lastTimeFetched: string;
@@ -29,7 +30,7 @@ const ConverterScreenPresenter: React.SFC<OwnProps> = props => {
   } else {
     return (
       <PresenterContainer lastTimeFetched={lastTimeFetched}>
-        <View style={{ flexDirection: "row" }}>
+        <View style={styles.rates}>
           <CurrencyCellPresenter
             name={baseRate.currency}
             rate={baseRate.rate.toString()}
@@ -39,6 +40,7 @@ const ConverterScreenPresenter: React.SFC<OwnProps> = props => {
             rate={selectedRate.rate.toString()}
           />
         </View>
+        <AmountPickerPresenter />
       </PresenterContainer>
     );
   }
@@ -60,7 +62,8 @@ const styles = StyleSheet.create({
   },
   rates: {
     flexDirection: "row",
-    marginHorizontal: 12
+    marginHorizontal: 12,
+    marginBottom: 12
   }
 });
 

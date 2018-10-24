@@ -7,17 +7,19 @@ export interface Rate {
 }
 
 export interface RatesState {
-  time?: Date;
+  time: string;
   base: string;
   rates: Rate[];
   errorMessage?: string;
+  isFetching: boolean;
 }
 
 const defaultValue = {
-  time: undefined,
+  time: "",
   base: "",
   rates: [],
-  errorMessage: undefined
+  errorMessage: undefined,
+  isFetching: false
 };
 
 export const rates: Reducer<RatesState, RatesActions> = (
@@ -25,17 +27,21 @@ export const rates: Reducer<RatesState, RatesActions> = (
   action
 ) => {
   switch (action.type) {
+    case RatesActionTypes.FETCH_RATES:
+      return { ...state, isFetching: true };
     case RatesActionTypes.FETCH_RATES_SUCCESS:
       return {
         ...state,
         time: action.time,
         base: action.base,
-        rates: action.rates
+        rates: action.rates,
+        isFetching: false
       };
     case RatesActionTypes.FETCH_RATES_FAILURE:
       return {
         ...state,
-        errorMessage: action.err
+        errorMessage: action.err,
+        isFetching: false
       };
     default:
       return state;

@@ -14,7 +14,7 @@ interface FetchRatesAction {
 
 interface FetchRatesSuccessAction {
   type: RatesActionTypes.FETCH_RATES_SUCCESS;
-  time: Date;
+  time: string;
   base: string;
   rates: Rate[];
 }
@@ -38,7 +38,7 @@ export const fetchRatesActionCreator = (): FetchRatesAction => {
 };
 
 export const fetchRatesSuccessActionCreator = (
-  time: Date,
+  time: string,
   base: string,
   rates: Rate[]
 ): FetchRatesSuccessAction => {

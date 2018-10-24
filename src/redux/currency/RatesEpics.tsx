@@ -25,7 +25,7 @@ export const fetchRateEpic: Epic<RootActions, RootActions, RootState> = (
           };
           console.log(response);
           return fetchRatesSuccessActionCreator(
-            new Date(mappedResponse.time),
+            mappedResponse.time,
             mappedResponse.base,
             mappedResponse.rates
           );

@@ -5,7 +5,10 @@ import { Rate } from "./RatesReducer";
 export enum RatesActionTypes {
   FETCH_RATES = "[rates] FETCH_RATES",
   FETCH_RATES_SUCCESS = "[rates] FETCH_RATES_SUCCESS",
-  FETCH_RATES_FAILURE = "[rates] FETCH_RATES_FAILURE"
+  FETCH_RATES_FAILURE = "[rates] FETCH_RATES_FAILURE",
+  UPDATE_BASE_AMOUNT = "[rates] UPDATE_BASE_AMOUNT",
+  UPDATE_SELECTED_RATE = "[rates] UPDATE_SELECTED_RATE",
+  UPDATE_BASE_RATE = "[rates] UPDATE_BASE_RATE"
 }
 
 interface FetchRatesAction {
@@ -24,10 +27,16 @@ interface FetchRatesFailureAction {
   err: string;
 }
 
+interface UpdateBaseAmountAction {
+  type: RatesActionTypes.UPDATE_BASE_AMOUNT;
+  amount: number;
+}
+
 export type RatesActions =
   | FetchRatesAction
   | FetchRatesSuccessAction
-  | FetchRatesFailureAction;
+  | FetchRatesFailureAction
+  | UpdateBaseAmountAction;
 
 // Action creators
 
@@ -50,9 +59,20 @@ export const fetchRatesSuccessActionCreator = (
   };
 };
 
-export const fetchRatesFailureActionCreator = (err: Error) => {
+export const fetchRatesFailureActionCreator = (
+  err: Error
+): FetchRatesFailureAction => {
   return {
     type: RatesActionTypes.FETCH_RATES_FAILURE,
     err: err.message
+  };
+};
+
+export const updateBaseAmountActionCreator = (
+  amount: number
+): UpdateBaseAmountAction => {
+  return {
+    type: RatesActionTypes.UPDATE_BASE_AMOUNT,
+    amount: amount
   };
 };

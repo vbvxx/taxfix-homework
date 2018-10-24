@@ -23,7 +23,7 @@ export const fetchRateEpic: Epic<RootActions, RootActions, RootState> = (
             base: string;
             rates: Rate[];
           };
-          console.log(response);
+          mappedResponse.rates.push({ currency: "EUR", rate: 1 });
           return fetchRatesSuccessActionCreator(
             mappedResponse.time,
             mappedResponse.base,

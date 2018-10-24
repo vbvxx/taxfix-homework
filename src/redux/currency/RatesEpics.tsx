@@ -15,7 +15,6 @@ export const fetchRateEpic: Epic<RootActions, RootActions, RootState> = (
   return action$.pipe(
     ofType(RatesActionTypes.FETCH_RATES),
     switchMap((action$, index) => {
-      console.log("HERE IN EPIC");
       return ajax.getJSON("https://txf-ecb.glitch.me/rates").pipe(
         map(response => {
           console.log(response);

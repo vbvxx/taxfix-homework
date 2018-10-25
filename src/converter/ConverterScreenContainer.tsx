@@ -87,15 +87,15 @@ const mapDispatchToProps = (dispatch: Dispatch<RootActions>): DispatchProps => {
       searchResults: string[],
       selectedCurrency: string,
       fromBaseCurrency: boolean
-    ) => [
+    ) => {
       dispatch(
         initSearchResultActionCreator(
           searchResults,
           selectedCurrency,
           fromBaseCurrency
         )
-      )
-    ]
+      );
+    }
   };
 };
 

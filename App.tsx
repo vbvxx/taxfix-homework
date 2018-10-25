@@ -1,10 +1,49 @@
 import * as React from "react";
-import { StyleSheet, Text, View, Platform } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+  AppState,
+  AppStateStatus
+} from "react-native";
 import ConverterScreenContainer from "./src/converter/ConverterScreenContainer";
-import { Provider } from "react-redux";
-import store from "./src/redux/Store";
+import { Provider, connect } from "react-redux";
+import store, { RootState, RootActions } from "./src/redux/Store";
+import { Dispatch } from "redux";
+import { fetchRatesActionCreator } from "./src/redux/currency/CurrencyActions";
 
-export default class App extends React.Component<{}> {
+interface OwnProps {}
+interface DispatchProps {
+  fetchRatesActionCreator: () => void;
+}
+interface StateProps {}
+
+interface State {
+  appState: AppStateStatus;
+}
+
+type Props = OwnProps & StateProps & DispatchProps;
+
+class App extends React.Component<Props, State> {
+  componentDidMount() {
+    AppState.addEventListener("change", this.handleAppStateChange);
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener("change", this.handleAppStateChange);
+  }
+
+  handleAppStateChange = (nextAppState: any) => {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === "active"
+    ) {
+      this.props.fetchRatesActionCreator();
+    }
+    this.setState({ appState: nextAppState });
+  };
+
   render() {
     let statusBarHeight = { marginTop: 0 };
     if (Platform.OS === "ios") {
@@ -12,9 +51,7 @@ export default class App extends React.Component<{}> {
     }
     return (
       <View style={[styles.container, statusBarHeight]}>
-        <Provider store={store}>
-          <ConverterScreenContainer />
-        </Provider>
+        <ConverterScreenContainer />
       </View>
     );
   }
@@ -28,3 +65,28 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
+
+const mapStateToProps = (state: RootState): StateProps => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch: Dispatch<RootActions>): DispatchProps => {
+  return {
+    fetchRatesActionCreator: () => {
+      dispatch(fetchRatesActionCreator());
+    }
+  };
+};
+
+const ConnectedApp = connect<StateProps, DispatchProps, OwnProps, RootState>(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
+
+const ExportApp = () => (
+  <Provider store={store}>
+    <ConnectedApp />
+  </Provider>
+);
+
+export default ExportApp;

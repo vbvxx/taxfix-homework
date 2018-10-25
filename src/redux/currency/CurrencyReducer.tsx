@@ -91,21 +91,30 @@ export const getConvertedAmount = (state: CurrencyState): number => {
 };
 
 export const getBaseRate = (state: CurrencyState): Rate | undefined => {
-  if (state.rates.length > 0) {
-    return state.rates.filter(elem => elem.currency === state.baseCurrency)[0];
-  }
-  return undefined;
+  return { currency: state.baseCurrency, rate: 1 };
 };
 
 export const getSelectedRate = (state: CurrencyState): Rate | undefined => {
   if (state.rates.length > 0) {
-    return state.rates.filter(
+    const selected = state.rates.filter(
       elem => elem.currency === state.selectedCurrency
     )[0];
+    let ponderatedRate = getRatio(state) * selected.rate;
+    return { ...selected, rate: +ponderatedRate.toPrecision(6) };
   }
   return undefined;
 };
 
 export const getCurrencyArray = (state: CurrencyState): string[] => {
   return state.rates.map(elem => elem.currency);
+};
+
+const getRatio = (state: CurrencyState) => {
+  const targetRate = state.rates.filter(
+    elem => elem.currency === state.selectedCurrency
+  )[0].rate;
+  const baseRate = state.rates.filter(
+    elem => elem.currency === state.baseCurrency
+  )[0].rate;
+  return +(targetRate / baseRate);
 };

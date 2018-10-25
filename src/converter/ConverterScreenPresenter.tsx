@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Text, Modal } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Modal,
+  TouchableHighlight,
+  Keyboard
+} from "react-native";
 import CurrencyCellPresenter from "./CurrencyCellPresenter";
 import { Rate } from "../redux/currency/CurrencyReducer";
 import { greyColour } from "../Constants";
@@ -18,6 +25,10 @@ interface OwnProps {
 interface State {
   modalVisible: boolean;
 }
+
+const dismissKeyboard = () => {
+  Keyboard.dismiss();
+};
 
 const PresenterContainer: React.SFC<{
   lastTimeFetched: string;
@@ -80,25 +91,32 @@ class ConverterScreenPresenter extends React.Component<OwnProps, State> {
       );
     } else if (baseRate !== undefined && selectedRate !== undefined) {
       return (
-        <PresenterContainer
-          lastTimeFetched={lastTimeFetched}
-          dismiss={this.dismissModal}
-          modalVisible={this.state.modalVisible}
+        <TouchableHighlight
+          onPress={dismissKeyboard}
+          style={{ flex: 1, width: "100%" }}
+          underlayColor="#FFFFFF00"
         >
-          <View style={styles.rates}>
-            <CurrencyCellPresenter
-              name={baseRate!.currency}
-              rate={baseRate!.rate.toString()}
-              onPress={this.onCellPress}
-            />
-            <CurrencyCellPresenter
-              name={selectedRate!.currency}
-              rate={selectedRate!.rate.toString()}
-              onPress={this.onCellPress}
-            />
-          </View>
-          <AmountPickerContainer />
-        </PresenterContainer>
+          <PresenterContainer
+            lastTimeFetched={lastTimeFetched}
+            dismiss={this.dismissModal}
+            modalVisible={this.state.modalVisible}
+          >
+            <View style={styles.rates}>
+              <CurrencyCellPresenter
+                name={baseRate!.currency}
+                rate={baseRate!.rate.toString()}
+                onPress={this.onCellPress}
+              />
+              <CurrencyCellPresenter
+                name={selectedRate!.currency}
+                rate={selectedRate!.rate.toString()}
+                onPress={this.onCellPress}
+              />
+            </View>
+
+            <AmountPickerContainer />
+          </PresenterContainer>
+        </TouchableHighlight>
       );
     } else {
       return null;

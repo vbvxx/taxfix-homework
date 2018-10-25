@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View, Text, TouchableOpacity, Image } from "react-native";
-import { darkGreyColour, greyColour } from "../Constants";
+import { darkGreyColour, greyColour, mediumGreyColour } from "../Constants";
 import { RootState, RootActions } from "../redux/Store";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
   cellContainer: {
     height: 50,
     marginHorizontal: 12,
-    borderBottomWidth: 0.25,
-    borderColor: greyColour,
+    borderBottomWidth: 1,
+    borderColor: mediumGreyColour,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between"

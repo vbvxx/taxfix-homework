@@ -99,7 +99,7 @@ export const getSelectedRate = (state: CurrencyState): Rate | undefined => {
     const selected = state.rates.filter(
       elem => elem.currency === state.selectedCurrency
     )[0];
-    let ponderatedRate = getRatio(state) * selected.rate;
+    let ponderatedRate = getRatio(state);
     return { ...selected, rate: +ponderatedRate.toPrecision(6) };
   }
   return undefined;

@@ -26,6 +26,8 @@ interface State {
 type Props = OwnProps & StateProps & DispatchProps;
 
 class App extends React.Component<Props, State> {
+  state = { appState: AppState.currentState };
+
   componentDidMount() {
     AppState.addEventListener("change", this.handleAppStateChange);
   }

@@ -1,6 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableHighlight } from "react-native";
-import { ultraLightGreyColour, darkGreyColour } from "../Constants";
+import {
+  ultraLightGreyColour,
+  darkGreyColour,
+  mediumGreyColour
+} from "../Constants";
 
 interface OwnProps {
   name: string;
@@ -39,7 +43,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginHorizontal: 6,
     height: 32,
-    borderRadius: 8
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: mediumGreyColour
   },
   text: {
     fontSize: 16,

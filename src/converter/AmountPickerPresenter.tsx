@@ -7,7 +7,12 @@ import {
   NativeSyntheticEvent,
   TextInputEndEditingEventData
 } from "react-native";
-import { mediumGreyColour, darkGreyColour, greyColour } from "../Constants";
+import {
+  mediumGreyColour,
+  darkGreyColour,
+  greyColour,
+  ultraLightGreyColour
+} from "../Constants";
 import { Rate } from "../redux/currency/CurrencyReducer";
 
 interface OwnProps {
@@ -52,6 +57,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 24
   },
   textInput: {
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 0.5,
     borderColor: mediumGreyColour,
     flex: 1,
@@ -63,8 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 6,
     textAlign: "center",
-    borderBottomWidth: 1,
-    borderBottomColor: greyColour
+    backgroundColor: ultraLightGreyColour
   },
   fontColor: {
     color: darkGreyColour

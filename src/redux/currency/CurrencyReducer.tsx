@@ -32,7 +32,7 @@ export const currency: Reducer<CurrencyState, CurrencyActions> = (
 ) => {
   switch (action.type) {
     case CurrencyActionTypes.FETCH_RATES:
-      return { ...state, isFetching: true };
+      return { ...state, isFetching: true, errorMessage: undefined };
     case CurrencyActionTypes.FETCH_RATES_SUCCESS:
       return {
         ...state,
